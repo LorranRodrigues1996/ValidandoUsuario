@@ -36,6 +36,29 @@ const listUsuario = async (req, res) => {
     console.log(err)
   }
 }
+const verificaAptidao = async (req, res) => {
+    console.log("Acessou a função verificaAptidao()")
+    try {
+    const usuario = await Usuario.find()
+    const apto = usuario.every((usu) => {
+      if (usu.senha.length >= 6 && usu.email.toString() !== null && usu.nome.toString() !== null) {
+        console.log("Usuário apto a receber novas funcionalidade")
+        // res.status(200).json({ success: true, message: "Usuário apto a receber novas funcionalidade" });
+        return true
+      }else{
+        console.log("Usuário não apto")
+        // res.status(400).json({ success: true, message: "Usuário não apto" });
+        return false
+      }
+    })
+    console.log(apto)
+    res.status(200).json({ success: true, usuario });
+    // console.log(usuario)
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Erro ao buscar usuario', error: err });
+    console.log(err)
+  }
+}
 
 const getUsuario = async (req, res) => {
   console.log("Acessou a função getUsuario()")
@@ -51,4 +74,4 @@ const getUsuario = async (req, res) => {
     res.status(500).json({ success: false, error: 'Erro ao buscar usuario', detalhes: error.message });
   }
 };
-export { addUsuario, listUsuario, getUsuario }
+export { addUsuario, listUsuario, getUsuario, verificaAptidao }
